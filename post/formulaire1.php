@@ -10,13 +10,23 @@ echo '<pre>';print_r($_POST); echo'</pre>';
 if ($_POST) {
     echo "<p>Bienvenue </p>" . $_POST['pseudo'] . $_POST['mdp'];
 }
+echo '<hr>';
+
+//exercice : afficher les données saisies dans le formulaire avec une boucle
+foreach ($_POST as $connexion => $infoconnexion)
+{
+    echo $connexion . ':' . $infoconnexion . '<br>';
+}
+
+
+
 ?>
 
 
 
 
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
