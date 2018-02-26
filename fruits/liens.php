@@ -17,14 +17,15 @@
 
 <body>
 <h1>Bienvenue dans notre boutique</h1>
-<a href="liens.php?fruit=cerises&poids=1000">Cerises</a><br>
-<a href="liens.php?">Bananes</a><br>
-<a href="liens.php?">Pommes</a><br>
-<a href="liens.php?">Pêches</a><br>
+<a href="?fruit=cerises&poids=1000">Cerises</a><br>
+<a href="?fruit=bananes&poids=1000">Bananes</a><br>
+<a href="?fruit=pommes&poids=1000">Pommes</a><br>
+<a href="?fruit=peches&poids=1000">Pêches</a><br>
 
 <?php
-if ($_GET) {
+if (isset($_GET['fruit'])) {
     include('fonction.inc.php');
+    echo '<pre>'; print_r($_GET); echo '<pre>';
     echo calcul($_GET['fruit'], $_GET['poids']);
 }
 ?>

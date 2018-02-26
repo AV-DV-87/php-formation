@@ -464,6 +464,29 @@ foreach($tab_multi as $indice1 => $tableau)
 
 }
 
+
+//------------------Boucle et tableau de données-----------------
+echo '<h2>Classe et Objets</h2>';
+//Objet : autre de type de données proche d'un array permettant de regrouper des informations
+//cependant il va plus loin, car on peut y déclarer des variables (appelés : propriétés) mais
+//aussi des fonctions (appelés: méthodes)
+
+class Etudiant
+{
+    public $prenom = "Arnaud"; //public rend l'élément visible en dehors et dans la fonction
+    public $age = "30"; // déclaration d'une propriété public
+    public function pays ()
+    {
+        return "France";
+    }
+}
+//création d'un nouvel objet issu de étudiant : instancie la class et en fait un objet.
+//on la déploie pour s'en servir
+$objet = new Etudiant();
+echo '<pre>'; var_dump($objet); echo '</pre>';
+echo $objet->prenom . '<br>'; // -> permet d'aller appelé une propriété de la classe
+echo $objet->pays() . '<br>';
+
 ?>
 <!---->
 
