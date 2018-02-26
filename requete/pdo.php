@@ -74,7 +74,17 @@ echo '<h2> 05 . PDO : QUERY FETCHALL + FETCH_ASSOC </h2>';
 $resultat = $pdo->query("SELECT * FROM employes");
 $donnees = $resultat->fetchAll(PDO::FETCH_ASSOC);
 
-echo '<pre>'; print_r($donnees); echo '</pre>'; // tableau multidimension indéxé
+//echo '<pre>'; print_r($donnees); echo '</pre>'; // tableau multidimension indéxé
 
 //Exo afficher successivement les données de tous les employés à l'aide de boucles
 //et affichage conventionnel
+
+foreach($donnees as $indice1 => $tableau)
+{
+    echo '<hr>';
+    foreach ($tableau as $indice2 => $valeurs)
+    {
+        echo $valeurs . '<br>';
+    }
+
+}
