@@ -73,7 +73,7 @@ while($tableEmployes = $resultat->fetch(PDO::FETCH_ASSOC)) //un tableau array pa
 echo '<h2> 05 . PDO : QUERY FETCHALL + FETCH_ASSOC </h2>';
 $resultat = $pdo->query("SELECT * FROM employes");
 $donnees = $resultat->fetchAll(PDO::FETCH_ASSOC);
-
+//fetchall renvoi un tableau multi dimension avec un tableau pour chaque employé pas besoin de boucler
 //echo '<pre>'; print_r($donnees); echo '</pre>'; // tableau multidimension indéxé
 
 //Exo afficher successivement les données de tous les employés à l'aide de boucles
@@ -84,7 +84,79 @@ foreach($donnees as $indice1 => $tableau)
     echo '<hr>';
     foreach ($tableau as $indice2 => $valeurs)
     {
-        echo $valeurs . '<br>';
+        echo "$indice2 : $valeurs  <br>";
     }
 
 }
+
+
+echo '<h2> 06 . PDO QUERY - FETCH ET BDD </h2>';
+
+//exercice la liste des bases de données puis la mettre dans une liste ul li
+$resultat = $pdo->query("SHOW DATABASES");
+echo '<pre>'; var_dump($resultat); echo '<pre>';
+$donnees = $resultat->fetchAll(PDO::FETCH_ASSOC);
+echo '<pre>'; var_dump($donnees); echo '<pre>';
+echo '<ul>';
+foreach ($donnees as $donnee => $BDD) {
+    foreach ($BDD as $indice =>$nom)
+    {
+        echo "<li> $nom </li>";
+    }
+}
+echo '</ul>';
+
+echo '<h2> 07 . PDO QUERY - QUERY ET TABLE </h2>';
+//afficher la table avec une mise en forme de tableau HTML
+$resultat = $pdo->query("SELECT * FROM employes");
+
+
+
+//LE TABLEAU
+echo '<table border=1><tr>';
+for($i = 0; $i < $resultat->columnCount(); $i++)
+    //la boucle va tourner jusqu'à avoir parcouru toutes les colonnes de $resultat
+{
+    $colonne = $resultat->getColumnMeta($i); //récupère les entêtes des colonnes avec getColumnMeta
+//    echo '<pre>'; print_r($colonne); echo '</pre>';
+    echo '<td>' . $colonne['name'] . '</td>';
+
+}
+echo '</tr>';
+
+
+while ($ligne = $resultat->fetch(PDO::FETCH_ASSOC))
+//ATTENTION on ne peut pas associer deux fois la même méthode sur le même résultat PDO::FETCH_ASSOC
+{
+    echo '<tr>';
+    foreach ($ligne as $informations)
+    {
+        echo '<td>' . $informations . '</td>';
+    }
+    echo '</tr>';
+}
+
+
+echo '</table>';
+
+echo '<h2> 08 . PDO : PREPARE + BINDVALUE + EXECUTE </h2>';
+//améliore la performance en préparant à l'avance des requêtes
+
+$nom = "Collier";
+$resultat = $pdo->prepare('SELECT * FROM employes WHERE nom= :nom');
+//marqueur nominatif :nom qui peut être changé à tout moment pour executer la requête
+//soulage le SERVER et la BDD + sécurise la requete donc evite l'injections de SQL ou faille XSS
+
+//CONTROLES
+echo '<pre>'; print_r($resultat); echo '</pre>';
+echo '<pre>'; print_r(get_class_methods($resultat)); echo '</pre>';
+
+//on associe une variable (déjà déclarée en haut) à notre marqueur nominatif pour pouvoir éxécuter la requête
+$resultat->bindValue(':nom', $nom, PDO::PARAM_STR);
+//execution de la requete avec $nom à la place de :nom
+$resultat->execute();
+
+$donnees = $resultat->fetch(PDO::FETCH_ASSOC);
+echo '<pre>'; print_r($donnees); echo '</pre>';
+
+//on peut relancer BindValue avec une nouvelle valeur $name pour executer de nouveau la requête
