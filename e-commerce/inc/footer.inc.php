@@ -4,7 +4,7 @@
 
 </div>
 
-<footer class="text-center text-white p-2 fixed-bottom bckgnd">Copyright Arnaud Vallette - Plan du site</footer>
+<footer class="text-center text-white p-2 bckgnd">Copyright Arnaud Vallette - Plan du site</footer>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
