@@ -66,13 +66,14 @@ if(!empty($_POST))
                 $erreur .= '<div class="alert alert-danger mt-2">Cette référence existe déjà</div>';
             }
             $content .= $erreur;
-        if(empty($erreur)) {
-            $produit = $pdo->prepare("INSERT INTO produit(reference, categorie, titre, 
-        description, couleur, taille, public, photo, prix, stock) VALUES (:reference, :categorie, :titre, 
-        :description, :couleur, :taille, :public, :photo, :prix, :stock)");
+            if(empty($erreur)) {
 
-            $content .= '<div class="alert alert-success mt-1">Produit enregistré avec succès Référence :<strong> ' . $_POST['reference'] . ' </strong></div>';
-        }
+                $produit = $pdo->prepare("INSERT INTO produit(reference, categorie, titre, 
+            description, couleur, taille, public, photo, prix, stock) VALUES (:reference, :categorie, :titre, 
+            :description, :couleur, :taille, :public, :photo, :prix, :stock)");
+
+                $content .= '<div class="alert alert-success mt-1">Produit enregistré avec succès Référence :<strong> ' . $_POST['reference'] . ' </strong></div>';
+            }
         }
         //l'autre cas sera une modification UPDATE
         else
@@ -81,19 +82,23 @@ if(!empty($_POST))
             description=:description,couleur=:couleur,taille=:taille,public=:public,photo=:photo,prix=:prix,stock=:stock WHERE id_produit = '$_POST[id_produit]'");
             $content .= '<div class="alert alert-success mt-1">Produit modifié avec succès Référence :<strong> ' . $_POST['reference'] . ' </strong></div>';
         }
-    $produit->bindValue(':reference', $_POST['reference'], PDO::PARAM_STR);
-    $produit->bindValue(':categorie', $_POST['categorie'], PDO::PARAM_STR);
-    $produit->bindValue(':titre', $_POST['titre'], PDO::PARAM_STR);
-    $produit->bindValue(':description', $_POST['description'], PDO::PARAM_STR);
-    $produit->bindValue(':couleur', $_POST['couleur'], PDO::PARAM_STR);
-    $produit->bindValue(':taille', $_POST['taille'], PDO::PARAM_STR);
-    $produit->bindValue(':public', $_POST['public'], PDO::PARAM_STR);
-    $produit->bindValue(':photo', $photo_bdd, PDO::PARAM_STR);
-    $produit->bindValue(':prix', $_POST['prix'], PDO::PARAM_INT);
-    $produit->bindValue(':stock', $_POST['stock'], PDO::PARAM_INT);
+
+        if(empty($erreur)) {
+            $produit->bindValue(':reference', $_POST['reference'], PDO::PARAM_STR);
+            $produit->bindValue(':categorie', $_POST['categorie'], PDO::PARAM_STR);
+            $produit->bindValue(':titre', $_POST['titre'], PDO::PARAM_STR);
+            $produit->bindValue(':description', $_POST['description'], PDO::PARAM_STR);
+            $produit->bindValue(':couleur', $_POST['couleur'], PDO::PARAM_STR);
+            $produit->bindValue(':taille', $_POST['taille'], PDO::PARAM_STR);
+            $produit->bindValue(':public', $_POST['public'], PDO::PARAM_STR);
+            $produit->bindValue(':photo', $photo_bdd, PDO::PARAM_STR);
+            $produit->bindValue(':prix', $_POST['prix'], PDO::PARAM_INT);
+            $produit->bindValue(':stock', $_POST['stock'], PDO::PARAM_INT);
+            $produit->execute();
+        }
 
 
-    $produit->execute();
+
 
 
 } //fin du empty POST
@@ -200,9 +205,7 @@ if(isset($_GET['action']) && ($_GET['action'] == 'ajout' || $_GET['action'] == '
             </div>
             <div class="form-group col-6">
                 <label for="reference">Reference</label>
-                <input type="text" class="form-control" id="reference" '; if(!empty($reference))echo "disabled"; echo' name="reference" placeholder="Saisir votre reference" value="' .  $reference . '">
-            </div>
-            <div class="form-group col-6">
+                <input type="text" class="form-control" id="reference"  name="reference" placeholder="Saisir votre reference" value="' .  $reference . '"> </div> <div class="form-group col-6">
                 <label for="categorie">Categorie</label>
                 <input type="text" class="form-control" id="categorie" name="categorie" placeholder="Saisir votre categorie" value="' .  $categorie . '">
             </div>
@@ -231,9 +234,9 @@ if(isset($_GET['action']) && ($_GET['action'] == 'ajout' || $_GET['action'] == '
             </div>
             <div class="form-group col-6">
                 <label for="photo">Photo</label>
-                <input type="file" inputass="custom-file-input" id="photo" name="photo"><br>';
+                <input type="file" inputass="custom-file-input" id="photo" name="photo"  value= "'. $photo .'"><br>';
 
-                if (!empty($photo))
+                if(!empty($photo))
                 {
                     echo '<i> Vous pouvez uploader une nouvelle photo si vous souhaitez la changer</i><br>';
                     echo '<img src="' . $photo .'" width="90" height="90" value= "'. $photo .'"><br>';

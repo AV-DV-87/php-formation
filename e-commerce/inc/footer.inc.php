@@ -1,7 +1,3 @@
-<?php
-?>
-
-
 </div>
 
 <footer class="text-center text-white p-2 bckgnd">Copyright Arnaud Vallette - Plan du site</footer>

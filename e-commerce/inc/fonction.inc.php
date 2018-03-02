@@ -50,3 +50,48 @@ function internauteEstConnecteEtAdmin ()
         return false;
     }
 }
+
+//--------- Ajout d'un panier dans la session
+function creationDuPanier()
+{
+    if(!isset($_SESSION['panier'])) //si pas de tableau panier dans la session on le créé
+    {
+        $_SESSION['panier'] = array();
+        $_SESSION['panier']['titre'] = array(); //un tableau pour chaque indice car on peut avoir plusieurs prod dans le panier
+        $_SESSION['panier']['id_produit'] = array();
+        $_SESSION['panier']['quantite'] = array();
+        $_SESSION['panier']['prix'] = array();
+
+    }
+}
+//-------------ajout des infos dans le panier de session
+function ajouterProduitDansPanier($titre,$id_produit,$quantite,$prix)
+{
+    creationDuPanier();
+
+    $position_produit = array_search($id_produit,$_SESSION['panier']['id_produit']) ;
+    // TEST echo $position_produit;
+
+    if($position_produit !== false) //MAJ SESSION panier si la position produit existe on additionne aux quantités déjà ajoutées au panier
+    {
+        $_SESSION['panier']['quantite'][$position_produit] += $quantite; //on MAJ la quantité à l'indice trouvé
+    }
+    else { // AJOUT si on l'a pas encore ajouté on créé l'entrée du panier
+        $_SESSION['panier']['titre'][] = $titre; //[] permet d'ajouter des indices numériques par défaut
+        $_SESSION['panier']['id_produit'][] = $id_produit;
+        $_SESSION['panier']['quantite'][] = $quantite;
+        $_SESSION['panier']['prix'][] = $prix;
+    }
+}
+
+
+//--------MONTANT TOTAL
+function montantTotal()
+{
+    $total = 0;
+    for ($i = 0; $i < count($_SESSION['panier']['id_produit']); $i++) //la boucle tourne tant qu'il y des produits dans la session
+    {
+        $total += $_SESSION['panier']['quantite'][$i] * $_SESSION['panier']['prix'][$i];
+    }
+    return round($total, 2);
+}
