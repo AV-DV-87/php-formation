@@ -25,13 +25,14 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bckgnd">
     <div class="container-fluid">
-        <a class="navbar-brand" href="index.php">AVSTORE</a>
+        <a class="navbar-brand" href="<?= URL ?>boutique.php">AVSTORE</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
                 <?php
+
                 if (internauteEstConnecteEtAdmin())
                 {
                     echo'<li class="nav-item">
@@ -48,8 +49,15 @@
                     <a class="nav-link" href="'. URL .'profil.php">Profil</a></li>';
                     echo'<li class="nav-item active">
                     <a class="nav-link" href="'. URL .'boutique.php">La boutique</a></li>';
-                    echo'<li class="nav-item active">
-                    <a class="nav-link" href="'. URL .'panier.php">Panier</a></li>';
+                    if(isset($_SESSION['panier']))
+                    {
+                        echo'<li class="nav-item active">
+                        <a class="nav-link" href="'. URL .'panier.php">Panier <span class="badge badge-light">' . array_sum($_SESSION['panier']['quantite']) . '</span></a></li>';
+                    }
+                    else
+                    {
+                        echo'<li class="nav-item active"><a class="nav-link" href="'. URL .'panier.php">Panier</a></li>';
+                    }
                     echo'<li class="nav-item active">
                     <a class="nav-link" href="'. URL .'connexion.php?action=deconnexion">Deconnexion</a></li>';
 
@@ -62,7 +70,15 @@
                     <a class="nav-link" href="'. URL .'connexion.php">Connexion</a></li>';
                     echo'<li class="nav-item active">
                     <a class="nav-link" href="'. URL .'boutique.php">La Boutique</a></li>';
-                    echo'<li class="nav-item active"><a class="nav-link" href="'. URL .'panier.php">Panier</a></li>';
+                    if(isset($_SESSION['panier']))
+                    {
+                        echo'<li class="nav-item active">
+                    <a class="nav-link" href="'. URL .'panier.php">Panier <span class="badge badge-light">' . array_sum($_SESSION['panier']['quantite']) . '</span></a></li>';
+                    }
+                    else
+                    {
+                        echo'<li class="nav-item active"><a class="nav-link" href="'. URL .'panier.php">Panier</a></li>';
+                    }
                 }
                 ?>
 
