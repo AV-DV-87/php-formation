@@ -95,3 +95,20 @@ function montantTotal()
     }
     return round($total, 2);
 }
+
+//-------------RETRAIT D'UN PRODUIT DU PANIER
+function retireProduitDuPanier($id_produit_a_supprimer)
+{
+    $position_produit = array_search($id_produit_a_supprimer, $_SESSION['panier']['id_produit']);
+    // à quel indice est la valeur à supprimer dans la session panier
+
+    if($position_produit !== false) //si le produit est trouvé dans le tableau on le supprime tout en faisant remonter
+        // l'indice des autres produits avec array_splice
+    {
+        array_splice($_SESSION['panier']['titre'], $position_produit,1);
+        array_splice($_SESSION['panier']['id_produit'], $position_produit,1);
+        array_splice($_SESSION['panier']['quantite'], $position_produit,1);
+        array_splice($_SESSION['panier']['prix'], $position_produit,1);
+
+    }
+}
