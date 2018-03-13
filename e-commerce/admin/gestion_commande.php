@@ -76,14 +76,18 @@ $content .= '<tbody>';
 
 //while pour créer une ligne par résultat
 while ($tablecommande=$resultat->fetch(PDO::FETCH_ASSOC)) {
-
+    var_dump( $tablecommande);
     $content .= '<tr>';
     foreach ($tablecommande as $indice => $info) {
         $content .= '<td>' . $info . '</td>';
     }
     //ajout des glyphicons de suppr et modification
     $content .= '<td class="text-center"><a href="?action=details&id_commande='. $tablecommande['id_commande'] .'"><span class=""><i class="fas fa-search-plus"></i></span></a></td>';
-    $content .= '<td class="text-center"><a href="?action=details&id_commande='. $tablecommande['id_commande'] .'"><span class=""><i class="fas fa-search-plus"></i></span></a></td>';
+    $content .= '<td class="text-center"><div class="form-group col-6">
+                <select class="form-control" id="etat" name="statut">
+                    <option 'if($tablecommande["etat"] == "en cours de traitement"){ echo "selected";}' value="en cours de traitement">En cours de traitement</option>
+                </select>
+            </div></td>';
     $content .= '<td class="text-center"><a href="?action=modification&id_commande='. $tablecommande['id_commande'] .'"><span class=""><i class="fas fa-pencil-alt"></i></span></a></td>';
     $content .= '<td class="text-center"><a href="?action=suppression&id_commande='. $tablecommande['id_commande'] .'" onclick="return(confirm(\'En êtes vous certain?\'))"><span class=""><i class="far fa-trash-alt"></i></span></a></td>';
 
